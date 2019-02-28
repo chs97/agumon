@@ -1,14 +1,17 @@
 FROM golang:latest as builder
 
-WORKDIR /agumon
+WORKDIR /agumon-src
 
-COPY . /agumon
+COPY . /agumon-src
 
-RUN go mod download && \
-    GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags '-w -s' -o /agumon
+RUN go mod download 
+
+RUN GOOS=linux GOARCH=amd64 GO111MODULE=on CGO_ENABLED=0 go build -o /agumon
 
 FROM alpine:latest
 
 COPY --from=builder /agumon /
+
+RUN  apk add g++
 
 ENTRYPOINT ["/agumon"]

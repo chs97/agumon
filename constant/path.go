@@ -2,7 +2,7 @@ package constant
 
 import (
 	U "github.com/chs97/agumon/utils"
-	P "Path"
+	P "path"
 )
 
 // Path is used to get config file path

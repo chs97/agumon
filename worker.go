@@ -1,7 +1,6 @@
 package main
 
 import (
-	// "fmt"
 	"syscall"
 	"time"
 	"io"
@@ -27,13 +26,13 @@ func work(inputPath, outputPath string, timeLimit int) (*result, error){
 	res := &result{ state: 0, input: inputPath, output: outputPath }
 	in, err := os.Open(inputPath)
 	if err != nil {
-		return nil, err
+		return res, err
 	}
 	defer in.Close()
 
 	out, err := os.Create(outputPath)
 	if err != nil {
-		return nil, err
+		return res, err
 	}
 	defer out.Close()
 
@@ -41,14 +40,14 @@ func work(inputPath, outputPath string, timeLimit int) (*result, error){
 	cmd.Stdout = out
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
-		return nil, err
+		return res, err
 	}
 	io.Copy(stdin, in)
 	stdin.Close()
 	start := time.Now()
 	err = cmd.Start()
 	if err != nil {
-		return nil, err
+		return res, err
 	}
 	done := make(chan error)
 	go func() {

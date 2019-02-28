@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	Config "github.com/chs97/agumon/config"
 	Const "github.com/chs97/agumon/constant"
@@ -18,6 +19,7 @@ type result2Yaml struct {
 
 func main() {
 	c, _ := Config.Parser()
+	fmt.Println(c)
 	all := []result2Yaml{}
 	for _, data := range c.Data {
 		input, output := Const.Path.GetFilePath(data.In)
