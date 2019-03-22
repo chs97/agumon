@@ -12,6 +12,8 @@ FROM alpine:latest
 
 COPY --from=builder /agumon /
 
-RUN  apk add g++
+RUN  apk add g++ gcc openjdk8
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
+ENV PATH="$JAVA_HOME/bin:${PATH}" 
 
 ENTRYPOINT ["/agumon"]
