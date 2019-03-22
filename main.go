@@ -11,10 +11,11 @@ import (
 )
 
 type result2Yaml struct {
-	In		string 		`yaml:"input"`
+	In			string 		`yaml:"input"`
 	Memory 	int64 		`yaml:"memory"`
-	Time 	float64 	`yaml:"time"`
-	Result 	int 		`yaml:"result"`
+	Time 		float64 	`yaml:"time"`
+	Result 	int 			`yaml:"result"`
+	Error 	error 		`yaml:"error"`
 }
 
 func main() {
@@ -25,6 +26,7 @@ func main() {
 		input, output := Const.Path.GetFilePath(data.In)
 		answer := Const.Path.AbsPath(data.Out)
 		res, err := work(input, output, c.TimeLimit)
+		fmt.Println("work error: ", err)
 		if err != nil {
 			res.state = Const.SE
 		} else if res.state == Const.WAIT {
@@ -35,7 +37,7 @@ func main() {
 				res.state = Const.AC
 			}
 		}
-		all = append(all, result2Yaml{In: data.In, Memory: res.memory, Time: res.time, Result: res.state})
+		all = append(all, result2Yaml{In: data.In, Memory: res.memory, Time: res.time, Result: res.state, Error: err})
 	}
 	ans := Const.Path.AbsPath("answer.yml")
 	yml, err := yaml.Marshal(all)
