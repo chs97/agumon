@@ -14,7 +14,8 @@ type result struct {
 	memory 	int64
 	input 	string
 	output 	string 
-	state	int
+	state		int
+	err 		error
 }
 
 const outputDir = "/tmp/out"
@@ -22,7 +23,7 @@ const outputDir = "/tmp/out"
 func work(inputPath, outputPath string, timeLimit int) (*result, error){
 	// fmt.Println(outputPath, inputPath)
 	// execCmd := C.Path.ExecCmd()
-	res := &result{ state: 0, input: inputPath, output: outputPath }
+	res := &result{ state: 0, input: inputPath, output: outputPath, err: nil }
 	in, err := os.Open(inputPath)
 	if err != nil {
 		return res, err
@@ -55,6 +56,7 @@ func work(inputPath, outputPath string, timeLimit int) (*result, error){
 	select {
 	case err := <- done:
 		if err != nil {
+			res.err = err
 			res.state = C.RE
 			break
 		}
@@ -65,5 +67,5 @@ func work(inputPath, outputPath string, timeLimit int) (*result, error){
 	}
 	elapsed := time.Since(start)
 	res.time = elapsed.Seconds() * 1000
-	return res, nil
+	return res, res.err
 }
