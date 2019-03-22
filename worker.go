@@ -22,7 +22,7 @@ const outputDir = "/tmp/out"
 
 func work(inputPath, outputPath string, timeLimit int) (*result, error){
 	// fmt.Println(outputPath, inputPath)
-	program := C.Path.Program()
+	execCmd := C.Path.ExecCmd()
 	res := &result{ state: 0, input: inputPath, output: outputPath }
 	in, err := os.Open(inputPath)
 	if err != nil {
@@ -36,7 +36,7 @@ func work(inputPath, outputPath string, timeLimit int) (*result, error){
 	}
 	defer out.Close()
 
-	cmd := exec.Command(program)
+	cmd := exec.Command(execCmd)
 	cmd.Stdout = out
 	stdin, err := cmd.StdinPipe()
 	if err != nil {

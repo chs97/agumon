@@ -31,6 +31,19 @@ func (p *path) Program() string {
 	return P.Join(p.workspace, name)
 }
 
+func (p *path) ExecCmd() string {
+	language := U.GetEnv("LANGUAGE", "CPP")
+	path := U.GetEnv("PROGRAM", "dist")
+	exec := ""
+	switch language {
+	case "CPP":
+		exec = path
+	case "JAVA":
+		exec = "java -Dfile.encoding=UTF-8 -Xmx512M -Xss64M 'Main' " + path
+	}
+	return exec
+}
+
 func (p *path) AbsPath(filename string) string {
 	return P.Join(p.workspace, filename)
 }
