@@ -40,7 +40,7 @@ func (p *path) ExecCmd() *exec.Cmd {
 	case "CPP":
 		_exec = exec.Command(path)
 	case "JAVA":
-		_exec = exec.Command("java", "-Dfile.encoding=UTF-8", "-Xmx256M", "-Xss64M", "'Main'", path)
+		_exec = exec.Command("java", "-Dfile.encoding=UTF-8", "-Xmx256M", "-Xss64M", "Main", path)
 	}
 	return _exec
 }
