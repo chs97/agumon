@@ -4,7 +4,6 @@ import (
 	"syscall"
 	"time"
 	"io"
-	"os/exec"
 	"os"
 
 	C "github.com/chs97/agumon/constant"
@@ -22,7 +21,7 @@ const outputDir = "/tmp/out"
 
 func work(inputPath, outputPath string, timeLimit int) (*result, error){
 	// fmt.Println(outputPath, inputPath)
-	execCmd := C.Path.ExecCmd()
+	// execCmd := C.Path.ExecCmd()
 	res := &result{ state: 0, input: inputPath, output: outputPath }
 	in, err := os.Open(inputPath)
 	if err != nil {
@@ -36,7 +35,7 @@ func work(inputPath, outputPath string, timeLimit int) (*result, error){
 	}
 	defer out.Close()
 
-	cmd := exec.Command(execCmd)
+	cmd := C.Path.ExecCmd()
 	cmd.Stdout = out
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
