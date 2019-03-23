@@ -3,7 +3,6 @@ package constant
 import (
 	U "github.com/chs97/agumon/utils"
 	P "path"
-	"os/exec"
 )
 
 // Path is used to get config file path
@@ -28,21 +27,22 @@ func (p *path) Workspace() string {
 }
 
 func (p *path) Program() string {
-	name := U.GetEnv("PROGRAM", "dist")
-	return P.Join(p.workspace, name)
-}
-
-func (p *path) ExecCmd() *exec.Cmd {
 	language := U.GetEnv("LANGUAGE", "CPP")
-	path := U.GetEnv("PROGRAM", "dist")
-	var _exec *exec.Cmd
+	file := ""
 	switch language {
 	case "CPP":
-		_exec = exec.Command(path)
+		file = P.Join(p.workspace, "dist")
+		break
 	case "JAVA":
-		_exec = exec.Command("java", "-Dfile.encoding=UTF-8", "-Xmx256M", "-Xss64M", "Main", path)
+		file = P.Join(p.workspace, "Main.java")
+		break
 	}
-	return _exec
+	return file
+}
+
+func (p *path) SrcPath() string {
+	src := U.GetEnv("SOURCE", "src")
+	return P.Join(p.workspace, src)
 }
 
 func (p *path) AbsPath(filename string) string {

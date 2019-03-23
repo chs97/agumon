@@ -15,10 +15,39 @@ type result2Yaml struct {
 	Memory 	int64 		`yaml:"memory"`
 	Time 		float64 	`yaml:"time"`
 	Result 	int 			`yaml:"result"`
-	Error 	error 		`yaml:"error"`
+	Error 	string 		`yaml:"error"`
+}
+
+type answer2Yaml struct {
+	Results []result2Yaml `yaml:"results"`
+	Error   string 				`yaml:"error"`
+	State		int 					`yaml:"state"`
 }
 
 func main() {
+	language := Util.GetEnv("LANGUAGE", "CPP")
+	answer := &answer2Yaml{}
+
+	fmt.Println("languaga", language)
+
+	defer func () {
+		ans := Const.Path.AbsPath("answer.yml")
+		yml, err := yaml.Marshal(answer)
+		if err != nil {
+			os.Exit(2)
+		}
+		err = Util.WriteFile(ans, yml)
+		if err != nil {
+			os.Exit(3)
+		}
+	}()
+
+	state, CE := compiler(language)
+	if CE != nil {
+		answer.Error = CE.Error()
+		answer.State = state
+		return
+	} 
 	c, _ := Config.Parser()
 	fmt.Println(c)
 	all := []result2Yaml{}
@@ -37,17 +66,14 @@ func main() {
 				res.state = Const.AC
 			}
 		}
-		all = append(all, result2Yaml{In: data.In, Memory: res.memory, Time: res.time, Result: res.state, Error: err})
+		message := ""
+		if err != nil {
+			message = err.Error()
+		}
+		all = append(all, result2Yaml{In: data.In, Memory: res.memory, Time: res.time, Result: res.state, Error: message})
 	}
-	ans := Const.Path.AbsPath("answer.yml")
-	yml, err := yaml.Marshal(all)
-	if err != nil {
-		os.Exit(2)
-	}
-	err = Util.WriteFile(ans, yml)
-	if err != nil {
-		os.Exit(3)
-	}
+	answer.Results = all
+	
 	// fmt.Println(string(yml))
 	// workspace := getEnv("WORKSPACE", "/home/workspace")
 	// fmt.Println(workspace)

@@ -17,4 +17,8 @@ const (
 	RE = 6
 	// SE is System Error
 	SE = 7
+	// CE is Compiler Error
+	CE = 8
+	// CTLE is Compiler Time limit exceeded
+	CTLE = 9
 )
