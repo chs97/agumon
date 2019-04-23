@@ -51,7 +51,11 @@ func main() {
 	c, _ := Config.Parser()
 	fmt.Println(c)
 	all := []result2Yaml{}
-	for _, data := range c.Data {
+	Data := c.Data
+	if (Const.Path.Mode() == "test") {
+		Data = c.Test
+	}
+	for _, data := range Data {
 		input, output := Const.Path.GetFilePath(data.In)
 		answer := Const.Path.AbsPath(data.Out)
 		res, err := work(input, output, c.TimeLimit)

@@ -20,6 +20,7 @@ type Config struct {
 	TimeLimit	int 		`yaml:"time-limit"`
 	MemoryLimit int			`yaml:"memory-limit"`
 	Data 		[]data 		`yaml:"data"`
+	Test 		[]data    `yaml:"test"`
 }
 
 func readConfig (path string) (*Config, error) {

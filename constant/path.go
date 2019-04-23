@@ -22,6 +22,11 @@ func (p *path) Config() string {
 	return P.Join(p.workspace, config)
 }
 
+func (p *path) Mode() string {
+	mode := U.GetEnv("RUN_MODE", "data")
+	return mode
+}
+
 func (p *path) Workspace() string {
 	return p.workspace
 }
