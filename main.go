@@ -59,9 +59,6 @@ func main() {
 		input, output := Const.Path.GetFilePath(data.In)
 		answer := Const.Path.AbsPath(data.Out)
 		res, err := work(input, output, c.TimeLimit)
-		if (res.memory > c.MemoryLimit) {
-			res.state = Const.MLE
-		}
 		fmt.Println("work error: ", err)
 		if err != nil {
 			res.state = Const.SE
@@ -76,6 +73,9 @@ func main() {
 		message := ""
 		if err != nil {
 			message = err.Error()
+		}
+		if (res.memory > c.MemoryLimit) {
+			res.state = Const.MLE
 		}
 		all = append(all, result2Yaml{In: data.In, Memory: res.memory, Time: res.time, Result: res.state, Error: message})
 	}
