@@ -59,6 +59,9 @@ func main() {
 		input, output := Const.Path.GetFilePath(data.In)
 		answer := Const.Path.AbsPath(data.Out)
 		res, err := work(input, output, c.TimeLimit)
+		if (res.memory > c.MemoryLimit) {
+			res.state = Const.MLE
+		}
 		fmt.Println("work error: ", err)
 		if err != nil {
 			res.state = Const.SE

@@ -18,7 +18,7 @@ type data struct {
 // Config is used for runner
 type Config struct {
 	TimeLimit	int 		`yaml:"time-limit"`
-	MemoryLimit int			`yaml:"memory-limit"`
+	MemoryLimit int64			`yaml:"memory-limit"`
 	Data 		[]data 		`yaml:"data"`
 	Test 		[]data    `yaml:"test"`
 }
