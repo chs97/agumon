@@ -74,7 +74,7 @@ func main() {
 		if err != nil {
 			message = err.Error()
 		}
-		if (res.memory > c.MemoryLimit) {
+		if (res.memory > int64(c.MemoryLimit)) {
 			res.state = Const.MLE
 		}
 		all = append(all, result2Yaml{In: data.In, Memory: res.memory, Time: res.time, Result: res.state, Error: message})
